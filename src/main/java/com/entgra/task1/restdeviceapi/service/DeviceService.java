@@ -22,7 +22,7 @@ public class DeviceService implements IDeviceService {
 
     @Override
     public DeviceDTO findById(long id) {
-        Device device = deviceDAO.findById(id).get();
+        Device device = deviceDAO.findById(id).orElse(null);
         if(device != null) {
             return deviceToDeviceDTO(device);
         }
@@ -42,7 +42,7 @@ public class DeviceService implements IDeviceService {
     @Override
     public DeviceDTO updateDeviceById(DeviceDTO deviceDTO) {
         Device device = deviceDTOToDevice(deviceDTO);
-        Device updatedDevice = deviceDAO.updateById(device).get();
+        Device updatedDevice = deviceDAO.updateById(device).orElse(null);
         if(updatedDevice != null) {
             return deviceToDeviceDTO(updatedDevice);
         }

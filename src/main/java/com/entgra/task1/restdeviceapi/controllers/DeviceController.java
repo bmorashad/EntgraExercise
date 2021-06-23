@@ -3,6 +3,7 @@ package com.entgra.task1.restdeviceapi.controllers;
 import com.entgra.task1.restdeviceapi.models.Device;
 import com.entgra.task1.restdeviceapi.models.dto.DeviceDTO;
 import com.entgra.task1.restdeviceapi.service.IDeviceService;
+import com.entgra.task1.restdeviceapi.utils.APIResponse;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -20,37 +21,46 @@ public class DeviceController {
     IDeviceService deviceService;
 
     @GetMapping()
-    public List<DeviceDTO> getAll() {
-        return deviceService.findAll();
+    public JsonNode getAll() {
+        return APIResponse.createSuccessResponse(deviceService.findAll());
     }
 
     @GetMapping("/{id}")
-    public ObjectNode getById(@PathVariable("id") long id) {
-        ObjectMapper mapper = new ObjectMapper();
-        ObjectNode data = mapper.createObjectNode();
+    public JsonNode getById(@PathVariable("id") long id) {
         DeviceDTO device = deviceService.findById(id);
         if(device != null) {
-            data.set("device", mapper.valueToTree(device));
+            return APIResponse.createSuccessResponse(device);
         }
-        return data;
+        return APIResponse.createErrorResponse("No device found with the given id");
     }
 
     @PutMapping()
-    public DeviceDTO updateById(@RequestBody() DeviceDTO device) {
-        return deviceService.updateDeviceById(device);
+    public JsonNode updateById(@RequestBody() DeviceDTO device) {
+        DeviceDTO updatedDevice = deviceService.updateDeviceById(device);
+        if(updatedDevice != null) {
+            return APIResponse.createSuccessResponse(device);
+        }
+        return APIResponse.createErrorResponse("No device found with the given id");
     }
 
     @DeleteMapping("/{id}")
-    public boolean delete(@PathVariable("id") long id) {
-        return deviceService.deleteDeviceById(id);
+    public JsonNode delete(@PathVariable("id") long id) {
+        boolean deleted = deviceService.deleteDeviceById(id);
+        if(deleted) {
+            ObjectMapper mapper = new ObjectMapper();
+            ObjectNode result = mapper.createObjectNode();
+            result.put("message:", "Device deleted successfully");
+            return APIResponse.createSuccessResponse(result);
+        }
+        return APIResponse.createErrorResponse("No device found with the give id");
     }
 
     @PostMapping()
-    public DeviceDTO create(@RequestBody() DeviceDTO device) {
+    public JsonNode create(@RequestBody() DeviceDTO device) {
         boolean created = deviceService.createDevice(device);
         if(created) {
-            return device;
+            return APIResponse.createSuccessResponse(device);
         }
-        return null;
+        return APIResponse.createErrorResponse("Error while trying to save device");
     }
 }
