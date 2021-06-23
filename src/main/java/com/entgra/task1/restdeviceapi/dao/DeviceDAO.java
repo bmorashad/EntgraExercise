@@ -41,7 +41,7 @@ public class DeviceDAO implements IDeviceDAO {
         Connection connection = db.getConnection();
         try {
             Statement stmt = connection.createStatement();
-            ResultSet rs = stmt.executeQuery("SELECT * FROM user WHERE id=" + id);
+            ResultSet rs = stmt.executeQuery("SELECT * FROM device WHERE id=" + id);
 
             if(rs.next())
             {
@@ -78,7 +78,7 @@ public class DeviceDAO implements IDeviceDAO {
         Connection connection = db.getConnection();
         try {
             Statement stmt = connection.createStatement();
-            int i = stmt.executeUpdate("DELETE FROM user WHERE id=" + id);
+            int i = stmt.executeUpdate("DELETE FROM device WHERE id=" + id);
             if(i == 1) {
                 return true;
             }
@@ -94,7 +94,7 @@ public class DeviceDAO implements IDeviceDAO {
     public Optional<Device> updateById(Device device) {
         Connection connection = db.getConnection();
         try {
-            PreparedStatement ps = connection.prepareStatement("UPDATE user SET name=?, model=?, status=? WHERE id=?");
+            PreparedStatement ps = connection.prepareStatement("UPDATE device SET name=?, model=?, status=? WHERE id=?");
             ps.setString(1, device.getName());
             ps.setString(2, device.getModel());
             ps.setInt(3, device.getStatus());
@@ -113,7 +113,7 @@ public class DeviceDAO implements IDeviceDAO {
 
     // helper
     private static Device extractDeviceResultsSet(ResultSet rs) throws SQLException {
-        long id = rs.getLong("id");
+        int id = rs.getInt("id");
         String name = rs.getString("name");
         String model = rs.getString("model");
         int status = rs.getInt("status");

@@ -42,6 +42,7 @@ public class Device {
     }
 
     public Device(long id, String name,  String model, int status) {
+        this.id = id;
         this.name = name;
         this.status = status;
         this.model = model;
