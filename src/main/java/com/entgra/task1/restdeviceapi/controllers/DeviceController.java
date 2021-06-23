@@ -1,7 +1,13 @@
 package com.entgra.task1.restdeviceapi.controllers;
 
+import com.entgra.task1.restdeviceapi.models.Device;
 import com.entgra.task1.restdeviceapi.models.dto.DeviceDTO;
 import com.entgra.task1.restdeviceapi.service.IDeviceService;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.ObjectWriter;
+import com.fasterxml.jackson.databind.node.ObjectNode;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -19,8 +25,14 @@ public class DeviceController {
     }
 
     @GetMapping("/{id}")
-    public DeviceDTO getById(@PathVariable("id") long id) {
-        return deviceService.findById(id);
+    public ObjectNode getById(@PathVariable("id") long id) {
+        ObjectMapper mapper = new ObjectMapper();
+        ObjectNode data = mapper.createObjectNode();
+        DeviceDTO device = deviceService.findById(id);
+        if(device != null) {
+            data.set("device", mapper.valueToTree(device));
+        }
+        return data;
     }
 
     @PutMapping()
