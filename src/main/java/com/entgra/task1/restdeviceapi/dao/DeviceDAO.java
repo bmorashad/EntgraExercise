@@ -61,7 +61,8 @@ public class DeviceDAO implements IDeviceDAO {
             PreparedStatement ps = connection.prepareStatement("INSERT INTO device(name, model, status) VALUES (?, ?, ?)");
             ps.setString(1, device.getName());
             ps.setString(2, device.getModel());
-            ps.setInt(3, device.getStatus());
+            String status = device.getStatus().name();
+            ps.setString(3, status);
             int i = ps.executeUpdate();
 
             if(i == 1) {
@@ -97,7 +98,8 @@ public class DeviceDAO implements IDeviceDAO {
             PreparedStatement ps = connection.prepareStatement("UPDATE device SET name=?, model=?, status=? WHERE id=?");
             ps.setString(1, device.getName());
             ps.setString(2, device.getModel());
-            ps.setInt(3, device.getStatus());
+            String status = device.getStatus().name();
+            ps.setString(3, status);
             ps.setLong(4, device.getId());
             int i = ps.executeUpdate();
 
@@ -116,7 +118,8 @@ public class DeviceDAO implements IDeviceDAO {
         int id = rs.getInt("id");
         String name = rs.getString("name");
         String model = rs.getString("model");
-        int status = rs.getInt("status");
+        String statusStr = rs.getString("status");
+        Device.status status = Device.status.valueOf(statusStr);
         return new Device(id, name, model, status);
     }
 }

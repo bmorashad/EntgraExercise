@@ -1,12 +1,13 @@
 package com.entgra.task1.restdeviceapi.models.dto;
 
+import com.entgra.task1.restdeviceapi.models.Device;
+
 public class DeviceDTO {
-
-
-
     private long id;
     private String name;
-    private int status;
+
+
+    private Device.status status;
     private String model;
 
     public void setId(long id) {
@@ -19,16 +20,14 @@ public class DeviceDTO {
         return name;
     }
 
-    public int getStatus() {
+    public Device.status getStatus() {
         return status;
     }
-
+    public void setStatus(Device.status status) {
+        this.status = status;
+    }
     public String getModel() {
         return model;
-    }
-
-    public void setStatus(int status) {
-        this.status = status;
     }
 
     public void setModel(String model) {
@@ -42,7 +41,7 @@ public class DeviceDTO {
     public DeviceDTO() {
     }
 
-    public DeviceDTO(long id, String name,  String model, int status) {
+    public DeviceDTO(long id, String name,  String model, Device.status status) {
         this.id = id;
         this.name = name;
         this.status = status;

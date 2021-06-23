@@ -54,14 +54,14 @@ public class DeviceService implements IDeviceService {
         long id = device.getId();
         String name = device.getName();
         String model = device.getModel();
-        int status = device.getStatus();
+        Device.status status = device.getStatus();
         return new DeviceDTO(id, name, model, status);
     }
     private static Device deviceDTOToDevice(DeviceDTO deviceDTO) {
         long id = deviceDTO.getId();
         String name = deviceDTO.getName();
         String model = deviceDTO.getModel();
-        int status = deviceDTO.getStatus();
+        Device.status status = deviceDTO.getStatus();
         return new Device(id, name, model, status);
     }
     private static List<DeviceDTO> deviceListToDeviceDTOList(List<Device> device) {

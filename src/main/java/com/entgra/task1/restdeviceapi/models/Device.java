@@ -4,13 +4,25 @@ import org.springframework.boot.autoconfigure.domain.EntityScan;
 
 @EntityScan
 public class Device {
+    public enum status{
+        enrolled,
+        active,
+        inactive
+
+    }
 
     private long id;
     private String name;
-    private int status;
+    private status status;
     private String model;
 
+    public void setStatus(Device.status status) {
+        this.status = status;
+    }
 
+    public Device.status getStatus() {
+        return status;
+    }
     public long getId() {
         return id;
     }
@@ -18,17 +30,11 @@ public class Device {
         return name;
     }
 
-    public int getStatus() {
-        return status;
-    }
 
     public String getModel() {
         return model;
     }
 
-    public void setStatus(int status) {
-        this.status = status;
-    }
 
     public void setModel(String model) {
         this.model = model;
@@ -41,7 +47,7 @@ public class Device {
     public Device() {
     }
 
-    public Device(long id, String name,  String model, int status) {
+    public Device(long id, String name,  String model, status status) {
         this.id = id;
         this.name = name;
         this.status = status;
