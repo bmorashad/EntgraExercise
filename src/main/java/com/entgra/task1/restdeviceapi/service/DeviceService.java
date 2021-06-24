@@ -7,6 +7,8 @@ import com.entgra.task1.restdeviceapi.models.dto.DeviceDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
+import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -55,14 +57,16 @@ public class DeviceService implements IDeviceService {
         String name = device.getName();
         String model = device.getModel();
         Device.status status = device.getStatus();
-        return new DeviceDTO(id, name, model, status);
+        Date enrolledTime = device.getEnrolledTime();
+        return new DeviceDTO(id, name, model, status, enrolledTime);
     }
     private static Device deviceDTOToDevice(DeviceDTO deviceDTO) {
         long id = deviceDTO.getId();
         String name = deviceDTO.getName();
         String model = deviceDTO.getModel();
         Device.status status = deviceDTO.getStatus();
-        return new Device(id, name, model, status);
+        Date enrolledTime = deviceDTO.getEnrolledTime();
+        return new Device(id, name, model, status, enrolledTime);
     }
     private static List<DeviceDTO> deviceListToDeviceDTOList(List<Device> device) {
         List<DeviceDTO> deviceDTOList = device.stream().map(DeviceService::deviceToDeviceDTO).collect(Collectors.toList());

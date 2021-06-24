@@ -7,7 +7,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.sql.*;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.*;
+import java.util.Date;
 
 @Component
 public class DeviceDAO implements IDeviceDAO {
@@ -58,11 +61,12 @@ public class DeviceDAO implements IDeviceDAO {
     public boolean save(Device device) {
         Connection connection = db.getConnection();
         try {
-            PreparedStatement ps = connection.prepareStatement("INSERT INTO device(name, model, status) VALUES (?, ?, ?)");
+            PreparedStatement ps = connection.prepareStatement("INSERT INTO device(name, model, status, enrolledTime) VALUES (?, ?, ?, ?)");
             ps.setString(1, device.getName());
             ps.setString(2, device.getModel());
             String status = device.getStatus().name();
             ps.setString(3, status);
+            ps.setTimestamp(4, getCurrentTimeStamp());
             int i = ps.executeUpdate();
 
             if(i == 1) {
@@ -120,6 +124,11 @@ public class DeviceDAO implements IDeviceDAO {
         String model = rs.getString("model");
         String statusStr = rs.getString("status");
         Device.status status = Device.status.valueOf(statusStr);
-        return new Device(id, name, model, status);
+        Date enrolledTime = rs.getObject(5, Date.class);
+        return new Device(id, name, model, status, enrolledTime);
+    }
+    private static java.sql.Timestamp getCurrentTimeStamp() {
+        java.util.Date today = new java.util.Date();
+        return new java.sql.Timestamp(today.getTime());
     }
 }

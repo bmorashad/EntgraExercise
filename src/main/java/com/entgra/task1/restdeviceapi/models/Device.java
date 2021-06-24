@@ -2,6 +2,9 @@ package com.entgra.task1.restdeviceapi.models;
 
 import org.springframework.boot.autoconfigure.domain.EntityScan;
 
+import java.time.LocalDateTime;
+import java.util.Date;
+
 @EntityScan
 public class Device {
     public enum status{
@@ -15,6 +18,15 @@ public class Device {
     private String name;
     private status status;
     private String model;
+    private Date enrolledTime;
+
+    public Date getEnrolledTime() {
+        return enrolledTime;
+    }
+
+    public void setEnrolledTime(Date enrolledTime) {
+        this.enrolledTime = enrolledTime;
+    }
 
     public void setStatus(Device.status status) {
         this.status = status;
@@ -47,7 +59,8 @@ public class Device {
     public Device() {
     }
 
-    public Device(long id, String name,  String model, status status) {
+    public Device(long id, String name,  String model, status status, Date enrolledTime) {
+        this.enrolledTime = enrolledTime;
         this.id = id;
         this.name = name;
         this.status = status;
